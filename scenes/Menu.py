@@ -30,11 +30,11 @@ class Menu(Scene):
         ]
 
         self.buttons = [
-            Button(string="PLAY", x=400, y=200, font_size=20, action=self.play)
+            Button(string="PLAY", x=400, y=200, font_size=20, action=lambda: self.change(2), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2)
         ]
 
-    def play(self):
-        self.next = 2
+    def change(self, id: int):
+        self.next = id
 
     def render(self, screen) -> None:
         screen.fill((1, 18, 38))  # Backgroud color

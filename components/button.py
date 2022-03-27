@@ -1,22 +1,37 @@
 from typing import Tuple, Callable
 
 import pygame
+
 from components.label import Label
-
-
 class Button(Label):
 
     def __init__(self, string: str = "Label",
                  x: int = 0,
                  y: int = 0,
-                 action: Callable = print("No action"),
+                 action: Callable = lambda: print("No action"),
                  center: bool = True,
-                 font: str = "freesansbold.ttf",
+                 font_family: str = "freesansbold.ttf",
                  font_size: int = 12,
                  color: Tuple[int, int, int] = (0, 0, 0),
-                 bg_color: Tuple[int, int, int]  = None):
+                 bg_color: Tuple[int, int, int]  = None,
+                 border_color: Tuple[int, int, int] = None,
+                 border_radius: int = 5,
+                 border: int = 1,
+                 padding: int = 10):
 
-        Label.__init__(self, string, x, y, center, font, font_size, color, bg_color)
+        Label.__init__(self,
+                        string, 
+                        x,
+                        y, 
+                        center, 
+                        font_family, 
+                        font_size, 
+                        color, 
+                        bg_color, 
+                        border_color, 
+                        border_radius, 
+                        border, padding)
+        
         self.action = action
 
     def process_input(self, events, pressed_keys):
@@ -24,6 +39,5 @@ class Button(Label):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
 
-                if pygame.mouse.get_pos()[0] >= self.text_rect.x and pygame.mouse.get_pos()[1] >= self.text_rect.y:
-                    if pygame.mouse.get_pos()[0] <= (self.text_rect.x + self.text_rect.width) and pygame.mouse.get_pos()[1] <= (self.text_rect.y + self.text_rect.height):
+                if pygame.mouse.get_pos()[0] >= self.rect.x and pygame.mouse.get_pos()[1] >= self.rect.y and pygame.mouse.get_pos()[0] <= (self.rect.x + self.rect.width) and pygame.mouse.get_pos()[1] <= (self.rect.y + self.rect.height):
                         self.action()
