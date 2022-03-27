@@ -11,7 +11,7 @@ from scenes.Game import Game
 pygame.init()  # Initialize pygame
 
 # Create and configurate the screen
-SIZE: Tuple[int, int] = 500, 500
+SIZE: Tuple[int, int] = 800, 550
 NAME: str = "BattleShip"
 ICON = pygame.image.load("icon.png")
 

@@ -2,8 +2,8 @@ from typing import Union, List, Sequence
 from pygame.event import Event
 from pygame.surface import Surface, SurfaceType
 
-
-class Scene:
+from component import Component
+class Scene(Component):
     """This class defines the basic components of a Scene:
     - Each scene must have and id
     - The next artribute define the next scene to draw
