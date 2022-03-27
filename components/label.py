@@ -73,14 +73,11 @@ class Label(Component):
         
         # background color
         if (self.bg_color != None):
-            screen.fill(self.bg_color, rect = self.rect)
-            """pygame.draw.rect(screen, 
+            # screen.fill(self.bg_color, rect = self.rect)
+            pygame.draw.rect(screen, 
                                 self.bg_color,
-                                self.rect,
-                                10,
-                                self.border_radius)
-            """
-        
+                                self.rect, 0, self.border_radius)
+            
         # border
         if (self.border_color != None and self.border > 0):
             pygame.draw.rect(screen,

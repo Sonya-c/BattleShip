@@ -24,6 +24,7 @@ def main() -> None:
     """Game Loop
     """
     scene_index: int = 0
+    scene_next: int = 0
 
     scenes: Dict[int, Scene] = {
         0: Menu(0),
@@ -47,7 +48,9 @@ def main() -> None:
         scenes[scene_index].render(screen)
 
         # Get the next scene
-        scene_index = scenes[scene_index].get_next()
+        scene_next = scenes[scene_index].get_next()
+        scenes[scene_index].next = scene_index
+        scene_index = scene_next
 
         pygame.display.update()  # Display the changes
 

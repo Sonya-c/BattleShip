@@ -30,23 +30,13 @@ class Menu(Scene):
         ]
 
         self.buttons = [
-            Button(string="PLAY", x=400, y=200, font_size=20, action=lambda: self.change(2), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2)
+            Button(string="PLAY", x=400, y=240, font_size=20, action=lambda: self.change(2), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=30),
+            Button(string="HELP", x=400, y=300, font_size=20, action=lambda: self.change(1), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=30)
         ]
-
-    def change(self, id: int):
-        self.next = id
 
     def render(self, screen) -> None:
         screen.fill((1, 18, 38))  # Backgroud color
 
         screen.blit(self.banner, (0, 80))  # Image
 
-        for label in self.labels:
-            label.render(screen)
-
-        for button in self.buttons:
-            button.render(screen)
-
-    def process_input(self, events, pressed_keys) -> None:
-        for button in self.buttons:
-            button.process_input(events, pressed_keys)
+        super().render(screen)  # draw buttons and labels

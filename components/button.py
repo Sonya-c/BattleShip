@@ -37,7 +37,5 @@ class Button(Label):
     def process_input(self, events, pressed_keys):
 
         for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-
-                if pygame.mouse.get_pos()[0] >= self.rect.x and pygame.mouse.get_pos()[1] >= self.rect.y and pygame.mouse.get_pos()[0] <= (self.rect.x + self.rect.width) and pygame.mouse.get_pos()[1] <= (self.rect.y + self.rect.height):
+            if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] >= self.rect.x and pygame.mouse.get_pos()[1] >= self.rect.y and pygame.mouse.get_pos()[0] <= (self.rect.x + self.rect.width) and pygame.mouse.get_pos()[1] <= (self.rect.y + self.rect.height):
                         self.action()
