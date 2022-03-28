@@ -6,6 +6,7 @@ from component import Component
 from components.button import Button
 from components.label import Label
 
+
 class Scene(Component):
     """This class defines the basic components of a Scene:
     - Each scene must have and id
@@ -20,11 +21,11 @@ class Scene(Component):
         self.id: int = id
         self.next: int = id
         self.labels: List[Label] = []
-        self.buttons: List[Buttons] = []
+        self.buttons: List[Button] = []
 
     def change(self, id: int):
         self.next = id
-        
+
     def process_input(self, events: List[Event], pressed_keys: Sequence[bool]) -> None:
         for button in self.buttons:
             button.process_input(events, pressed_keys)
