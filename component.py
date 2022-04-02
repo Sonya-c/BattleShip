@@ -4,6 +4,8 @@ from pygame.surface import Surface, SurfaceType
 
 
 class Component:
+    def __init__(self) -> None:
+        self.enable = True
 
     def process_input(self, events: List[Event], pressed_keys: Sequence[bool]) -> None:
         pass  # Ovewrite this

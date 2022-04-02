@@ -1,3 +1,4 @@
+from typing import Dict
 from scenes.Scene import Scene
 
 from components.label import Label
@@ -7,8 +8,10 @@ from components.board import Board
 
 class Game(Scene):
 
-    def __init__(self, id: int):
+    def __init__(self, id: int, state: Dict[str, any]):
         Scene.__init__(self, id)
+
+        self.state = state
 
         self.labels = [
             Label(string="BattleShip", center=True, x=400, y=50,

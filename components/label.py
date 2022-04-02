@@ -33,7 +33,7 @@ class Label(Component):
             botder (int, optional): Boder size. Defaults to 1
             padding (int, optional): padding. Defaults to 0.
         """
-
+        super().__init__()
         self.string = string
         self.x = x
         self.y = y

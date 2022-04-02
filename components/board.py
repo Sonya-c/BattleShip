@@ -58,6 +58,7 @@ class Board(Component):
                 button.render(screen)
 
     def process_input(self, events, pressed_keys) -> None:
-        for row in self.buttons:
-            for button in row:
-                button.process_input(events, pressed_keys)
+        if (self.enable):
+            for row in self.buttons:
+                for button in row:
+                    button.process_input(events, pressed_keys)

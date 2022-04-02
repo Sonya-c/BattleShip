@@ -26,13 +26,17 @@ def main() -> None:
     scene_index: int = 0
     scene_next: int = 0
 
-    scenes: Dict[int, Scene] = {
-        0: Menu(0),
-        1: Help(1),
-        2: Game(2)
+    run: bool = True
+
+    state: Dict[str, any] = {
+        "ship_num": 1
     }
 
-    run: bool = True
+    scenes: Dict[int, Scene] = {
+        0: Menu(0, state),
+        1: Help(1),
+        2: Game(2, state)
+    }
 
     while run:
         pressed_keys = pygame.key.get_pressed()
