@@ -2,8 +2,12 @@ from typing import Union, List, Sequence
 from pygame.event import Event
 from pygame.surface import Surface, SurfaceType
 
+from component import Component
+from components.button import Button
+from components.label import Label
 
-class Scene:
+
+class Scene(Component):
     """This class defines the basic components of a Scene:
     - Each scene must have and id
     - The next artribute define the next scene to draw
@@ -16,17 +20,22 @@ class Scene:
     def __init__(self, id: int):
         self.id: int = id
         self.next: int = id
+        self.labels: List[Label] = []
+        self.buttons: List[Button] = []
+
+    def change(self, id: int):
+        self.next = id
 
     def process_input(self, events: List[Event], pressed_keys: Sequence[bool]) -> None:
-        pass  # Ovewrite this
-
-    def update(self):
-        pass  # Overwrite this
+        for button in self.buttons:
+            button.process_input(events, pressed_keys)
 
     def render(self, screen: Union[Surface, SurfaceType]) -> None:
-        """Draw someting on the screen
-        """
-        pass  # Overwrite this
+        for label in self.labels:
+            label.render(screen)
+
+        for button in self.buttons:
+            button.render(screen)
 
     def get_next(self) -> int:
         """This method return the id of the next scene to draw. 
