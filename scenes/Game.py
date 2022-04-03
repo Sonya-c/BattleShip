@@ -1,6 +1,9 @@
-from typing import Dict
+import random
+
+from typing import Dict, Tuple
 from scenes.Scene import Scene
 
+from components.Barco import Barco as Ship
 from components.label import Label
 from components.button import Button
 from components.board import Board
@@ -26,8 +29,12 @@ class Game(Scene):
                 1), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=20)
         ]
 
-        self.board1 = Board(110, 150, 30, 30, 10, 10)
-        self.board2 = Board(440, 150, 30, 30, 10, 10)
+        self.ships = []
+        for _ in range(0, self.state["ship_num"]):
+            self.ships.append(Ship("Poner nombre", random.randint(0, 3)))
+
+        self.board1 = Board(110, 150, 30, 30, 10, 10, self.ships)
+        self.board2 = Board(440, 150, 30, 30, 10, 10, self.ships)
 
     def render(self, screen):
         screen.fill((1, 18, 38))  # Backgroud color

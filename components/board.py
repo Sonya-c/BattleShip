@@ -1,22 +1,25 @@
 
+from msilib.schema import tables
+import random
 from typing import List
 
 import pygame
 
+from components.Barco import Barco as Ship
 from component import Component
 from components.button import Button
 
 
 class Board(Component):
 
-    def __init__(self, x: int, y: int, box_w: int, box_h: int, rows: int, cols: int) -> None:
+    def __init__(self, x: int, y: int, box_w: int, box_h: int, rows: int, cols: int, ships: List[Ship] = []) -> None:
         super().__init__()
 
         self.x = x
         self.y = y
         self.box_w = box_w
         self.box_h = box_h
-
+        self.ships = ships
         self.board_table = []
         self.buttons: List[List[Button]] = []
 
@@ -25,6 +28,7 @@ class Board(Component):
             box_x = x
 
             self.buttons.append([])
+            self.board_table.append([0]*cols)
 
             for col in range(0, cols):
 
@@ -32,7 +36,7 @@ class Board(Component):
                     Button(" ",
                            box_x,
                            box_y,
-                           lambda row = row, col = col: self.change(row, col),
+                           lambda row=row, col=col: self.change(row, col),
                            color=(1, 18, 38),
                            bg_color=(235, 245, 241),
                            border_color=(213, 219, 217),
@@ -44,11 +48,42 @@ class Board(Component):
                 # print(box_x, box_y)
 
             box_y += self.buttons[row][col].rect.height + 5
+        self.generate()
 
     def change(self, x: int, y: int):
         # To Do logic here
-        self.buttons[x][y].string = "x"
-        self.buttons[x][y].update()
+        if (self.board_table[x][y] == 1):
+            self.board_table[x][y] = -1
+            self.buttons[x][y].bg_color = (219, 0, 37)
+            self.buttons[x][y].update()
+
+    def generate(self):
+        for ship in self.ships:
+
+            while True:
+                pos = (random.randint(0, 10), random.randint(0, 10))
+                direction = (random.randint(0, 1), random.randint(0, 1))
+
+                points = self.ship_points(pos, ship.get_size(), direction)
+
+                if (points != None):
+                    print(points)
+
+                    for point in points:
+                        self.board_table[point[0]][point[1]] = 1
+                        self.buttons[point[0]][point[1]
+                                               ].bg_color = (80, 174, 217)
+                    break
+
+        print(self.board_table)
+
+    def ship_points(self, pos=(3, 3), ship_size=4, direction=(1, 0)):
+        points = []
+        for i in range(ship_size):
+            points.append((pos[0]+i*direction[0], pos[1]+i*direction[1]))
+            if points[i][0] >= 10 or points[i][1] >= 10:
+                return None
+        return points
 
     def render(self, screen) -> None:
         super().render(screen)

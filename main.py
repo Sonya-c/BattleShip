@@ -29,7 +29,7 @@ def main() -> None:
     run: bool = True
 
     state: Dict[str, any] = {
-        "ship_num": 1
+        "ship_num": 5
     }
 
     scenes: Dict[int, Scene] = {
