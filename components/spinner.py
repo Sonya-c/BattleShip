@@ -10,6 +10,7 @@ from components.label import Label
 
 class Spinner(Component):
 
+
     def __init__(self,
                  x: int,
                  y: int,
@@ -43,11 +44,13 @@ class Spinner(Component):
 
         self.w = self.button_down.rect.w + self.label.rect.w + self.button_up.rect.w
 
+
     def spin(self, delta: int = 0):
         if (self.value + delta <= self.max and self.value + delta >= self.min):
             self.value += delta
             self.label.string = str(self.value)
             self.label.update()
+
 
     def render(self, screen) -> None:
         super().render(screen)
@@ -74,7 +77,9 @@ class Spinner(Component):
         self.label.render(screen)
         self.button_up.render(screen)
 
+
     def process_input(self, events, pressed_keys) -> None:
         if (self.enable):
             self.button_down.process_input(events, pressed_keys)
             self.button_up.process_input(events, pressed_keys)
+

@@ -14,10 +14,9 @@ class Menu(Scene):
     - Game: the main game
     """
 
-    def __init__(self, id: int, state: Dict[str, any]):
-        Scene.__init__(self, id)
 
-        self.state = state
+    def __init__(self, id: int, state: Dict[str, any]):
+        Scene.__init__(self, id, state)
 
         # Load image and change the size
         self.banner = pygame.transform.scale(
@@ -37,13 +36,12 @@ class Menu(Scene):
         ]
 
         self.buttons = [
-            Button(string="PLAY", x=350, y=350, font_size=20, action=lambda: self.change(
-                2), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=30),
-            Button(string="HELP", x=450, y=350, font_size=20, action=lambda: self.change(
-                1), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=30)
+            Button(string="PLAY", x=400, y=350, font_size=20, action=lambda: self.change_scene(
+                2), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=30)
         ]
 
         self.spinner = Spinner(470, 240, start= int(state["ship_num"]),min=1, max=20)
+
 
     def render(self, screen) -> None:
         screen.fill((1, 18, 38))  # Backgroud color
@@ -52,21 +50,13 @@ class Menu(Scene):
 
         super().render(screen)  # draw buttons and labels
 
-        # Background spiner input
-        """
-        pygame.draw.rect(screen,
-                         (1, 18, 38),
-                         pygame.Rect(250,
-                                     220,
-                                     200,
-                                     40),
-                         0, 10)
-        """
-
         self.spinner.render(screen)
+
 
     def process_input(self, events, pressed_keys) -> None:
         super().process_input(events, pressed_keys)
 
         self.spinner.process_input(events, pressed_keys)
         self.state["ship_num"] = self.spinner.value
+
+        

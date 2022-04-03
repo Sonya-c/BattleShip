@@ -1,4 +1,4 @@
-from typing import Union, List, Sequence
+from typing import Dict, Union, List, Sequence
 from pygame.event import Event
 from pygame.surface import Surface, SurfaceType
 
@@ -17,18 +17,33 @@ class Scene(Component):
     - get_next: return the next secen
     """
 
-    def __init__(self, id: int):
+
+    def __init__(self, id: int, state: Dict[str, any]):
+        """This is the template of a Scenne
+
+        Args:
+            id (int): Id of the scene
+            state (Dict[str, any]): global data of the game
+        """
         self.id: int = id
-        self.next: int = id
+        self.state = state
         self.labels: List[Label] = []
         self.buttons: List[Button] = []
 
-    def change(self, id: int):
-        self.next = id
+
+    def change_scene(self, scene_id: int):
+        """Change the scene 
+
+        Args:
+            scene_index (int): id of the scene 
+        """
+        self.state["scene_id"] = scene_id
+
 
     def process_input(self, events: List[Event], pressed_keys: Sequence[bool]) -> None:
         for button in self.buttons:
             button.process_input(events, pressed_keys)
+
 
     def render(self, screen: Union[Surface, SurfaceType]) -> None:
         for label in self.labels:
@@ -37,12 +52,4 @@ class Scene(Component):
         for button in self.buttons:
             button.render(screen)
 
-    def get_next(self) -> int:
-        """This method return the id of the next scene to draw. 
-        By default, it's the same id of the current scene.
-        But it can change after processing input
-
-        Returns:
-            int: the id of the next scene 
-        """
-        return self.next
+            

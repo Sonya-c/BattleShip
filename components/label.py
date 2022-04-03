@@ -7,6 +7,7 @@ from component import Component
 
 class Label(Component):
 
+
     def __init__(self, string: str = "Label",
                  x: int = 0,
                  y: int = 0,
