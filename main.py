@@ -52,9 +52,13 @@ def main() -> None:
         scenes[scene_index].render(screen)
 
         # Get the next scene
-        scene_next = scenes[scene_index].get_next()
-        scenes[scene_index].next = scene_index
-        scene_index = scene_next
+        if (scene_next != scenes[scene_index].get_next()):
+            scene_next = scenes[scene_index].get_next()
+            scenes[scene_index].next = scene_index
+            scene_index = scene_next
+
+            if scene_index == 2:
+                scenes[scene_index].init()
 
         pygame.display.update()  # Display the changes
 

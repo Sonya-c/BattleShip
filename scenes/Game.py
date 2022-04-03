@@ -1,4 +1,5 @@
 import random
+from tabnanny import check
 
 from typing import Dict, Tuple
 from scenes.Scene import Scene
@@ -29,12 +30,25 @@ class Game(Scene):
                 1), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=20)
         ]
 
+        self.init()
+
+    def init(self):
         self.ships = []
         for _ in range(0, self.state["ship_num"]):
             self.ships.append(Ship("Poner nombre", random.randint(0, 3)))
 
         self.board1 = Board(110, 150, 30, 30, 10, 10, self.ships)
-        self.board2 = Board(440, 150, 30, 30, 10, 10, self.ships)
+        self.board1.enable = False
+
+        self.board2 = Board(440, 150, 30, 30, 10, 10, self.ships, hide=True)
+
+    def check(self, board: Board):
+        for row in board.board_table:
+            for col in row:
+                if col == 1:
+                    return False
+
+        return True
 
     def render(self, screen):
         screen.fill((1, 18, 38))  # Backgroud color
@@ -49,3 +63,6 @@ class Game(Scene):
 
         self.board1.process_input(events, pressed_keys)
         self.board2.process_input(events, pressed_keys)
+
+        if (self.check(self.board2)):
+            print("You Won!")

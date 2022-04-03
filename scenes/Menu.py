@@ -43,7 +43,7 @@ class Menu(Scene):
                 1), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=30)
         ]
 
-        self.spinner = Spinner(470, 240, min=1, max=20)
+        self.spinner = Spinner(470, 240, start= int(state["ship_num"]),min=1, max=20)
 
     def render(self, screen) -> None:
         screen.fill((1, 18, 38))  # Backgroud color

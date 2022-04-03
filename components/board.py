@@ -12,7 +12,7 @@ from components.button import Button
 
 class Board(Component):
 
-    def __init__(self, x: int, y: int, box_w: int, box_h: int, rows: int, cols: int, ships: List[Ship] = []) -> None:
+    def __init__(self, x: int, y: int, box_w: int, box_h: int, rows: int, cols: int, ships: List[Ship], hide: bool = False) -> None:
         super().__init__()
 
         self.x = x
@@ -20,6 +20,8 @@ class Board(Component):
         self.box_w = box_w
         self.box_h = box_h
         self.ships = ships
+        self.hide = hide
+
         self.board_table = []
         self.buttons: List[List[Button]] = []
 
@@ -58,6 +60,7 @@ class Board(Component):
             self.buttons[x][y].update()
 
     def generate(self):
+        print("board.generate len of ships", len(self.ships))
         for ship in self.ships:
 
             while True:
@@ -67,12 +70,11 @@ class Board(Component):
                 points = self.ship_points(pos, ship.get_size(), direction)
 
                 if (points != None):
-                    print(points)
-
                     for point in points:
                         self.board_table[point[0]][point[1]] = 1
-                        self.buttons[point[0]][point[1]
-                                               ].bg_color = (80, 174, 217)
+                        if (not self.hide):
+                            self.buttons[point[0]][point[1]
+                                                   ].bg_color = (80, 174, 217)
                     break
 
         print(self.board_table)
