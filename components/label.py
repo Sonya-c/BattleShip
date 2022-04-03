@@ -18,7 +18,8 @@ class Label(Component):
                  border_color: Tuple[int, int, int] = None,
                  border_radius: int = 5,
                  border: int = 1,
-                 padding: int = 0):
+                 padding: int = 0,
+                 enable: bool = True):
         """Create a label component that display some text
 
         Args:
@@ -34,7 +35,7 @@ class Label(Component):
             botder (int, optional): Boder size. Defaults to 1
             padding (int, optional): padding. Defaults to 0.
         """
-        super().__init__()
+        super().__init__(enable)
         self.string = string
         self.x = x
         self.y = y

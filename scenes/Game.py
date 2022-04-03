@@ -1,5 +1,6 @@
 import random
 from tabnanny import check
+from turtle import update
 
 from typing import Dict, List, Tuple
 from scenes.Scene import Scene
@@ -15,6 +16,12 @@ class Game(Scene):
 
     def __init__(self, id: int, state: Dict[str, any]):
         Scene.__init__(self, id, state)
+
+        self.game_state = {
+            "play": True,
+            "won": False,
+            "turn": 0
+        }
 
         self.labels: List[Label] = [
             Label(string="Battle Ship", center=True, x=400, y=50, font_size=20, color=(228, 234, 242))
@@ -33,23 +40,37 @@ class Game(Scene):
                 padding=20)
         ]
 
-        self.init()
+        self.update()
 
 
-    def init(self):
-        self.turn: int = random.randint(0, 1)  # 0: the machine, 1: the gammer
+    def update(self):
+        self.game_state["turn"] = 1  # 0: the machine, 1: the gammer
+        self.ships: List[Ship] = []
 
-        self.ships = []
-
+        # Genrate the ships
         for _ in range(0, self.state["ship_num"]):
             self.ships.append(Ship("Poner nombre", random.randint(0, 3)))
 
-        self.board1 = Board(110, 150, 30, 30, 10, 10, self.ships)
-        self.board1.enable = False
+        # Create the boards
+        self.board_machine = Board(110, 150, 30, 30, 10, 10, 
+                                self.ships, 
+                                enable=False, 
+                                change_turn=lambda: self.change_turn(1))
 
-        self.board2 = Board(440, 150, 30, 30, 10, 10, self.ships, hide=True)
+        self.board_player = Board(440, 150, 30, 30, 10, 10, 
+                                self.ships,
+                                hide=True,
+                                change_turn=lambda: self.change_turn(0))
 
 
+    def change_turn(self, turn: int):
+        if self.game_state["play"]:
+            self.game_state["turn"] = turn
+
+            # machine turn 
+            if (turn == 0):
+                self.board_machine.change(random.randint(0, 9), random.randint(0, 9))
+        
     def check(self, board: Board):
         for row in board.board_table:
             for col in row:
@@ -64,15 +85,18 @@ class Game(Scene):
 
         super().render(screen)  # draw buttons and labels
 
-        self.board1.render(screen)
-        self.board2.render(screen)
-
+        self.board_machine.render(screen)
+        self.board_player.render(screen)
 
     def process_input(self, events, pressed_keys) -> None:
         super().process_input(events, pressed_keys)
 
-        self.board1.process_input(events, pressed_keys)
-        self.board2.process_input(events, pressed_keys)
+        if self.game_state["play"]:
+                self.board_player.process_input(events, pressed_keys)
 
-        if (self.check(self.board2)):
-            print("You Won!")
+        if (self.check(self.board_player)):
+            self.game_state["won"] = True
+            self.game_state["play"] = False
+
+        elif (self.check(self.board_machine)):
+            self.game_state["play"] = False

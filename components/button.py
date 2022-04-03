@@ -17,7 +17,8 @@ class Button(Label):
                  border_color: Tuple[int, int, int] = None,
                  border_radius: int = 5,
                  border: int = 1,
-                 padding: int = 10):
+                 padding: int = 10, 
+                 enable: bool = True):
 
         Label.__init__(self,
                        string,
@@ -29,7 +30,8 @@ class Button(Label):
                        bg_color,
                        border_color,
                        border_radius,
-                       border, padding)
+                       border, padding,
+                       enable)
 
         self.action = action
 

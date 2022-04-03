@@ -1,7 +1,6 @@
 
-from msilib.schema import tables
 import random
-from typing import List
+from typing import Callable, Dict, List
 
 import pygame
 
@@ -12,8 +11,19 @@ from components.button import Button
 
 class Board(Component):
 
-    def __init__(self, x: int, y: int, box_w: int, box_h: int, rows: int, cols: int, ships: List[Ship], hide: bool = False) -> None:
-        super().__init__()
+    def __init__(self,
+            x: int,
+            y: int,
+            box_w: int,
+            box_h: int,
+            rows: int,
+            cols: int,
+            ships: List[Ship],
+            hide: bool = False,
+            enable: bool = True,
+            change_turn: Callable = lambda: print("No action")
+            ) -> None:
+        super().__init__(enable)
 
         self.x = x
         self.y = y
@@ -21,7 +31,8 @@ class Board(Component):
         self.box_h = box_h
         self.ships = ships
         self.hide = hide
-
+        self.change_turn = change_turn
+    
         self.board_table = []
         self.buttons: List[List[Button]] = []
 
@@ -52,12 +63,19 @@ class Board(Component):
             box_y += self.buttons[row][col].rect.height + 5
         self.generate()
 
+
     def change(self, x: int, y: int):
+        self.change_turn()
+
         # To Do logic here
         if (self.board_table[x][y] == 1):
             self.board_table[x][y] = -1
             self.buttons[x][y].bg_color = (219, 0, 37)
-            self.buttons[x][y].update()
+        else:
+            self.buttons[x][y].bg_color = (115, 115, 115)
+
+        self.buttons[x][y].update()
+
 
     def generate(self):
         print("board.generate len of ships", len(self.ships))
@@ -79,6 +97,7 @@ class Board(Component):
 
         print(self.board_table)
 
+
     def ship_points(self, pos=(3, 3), ship_size=4, direction=(1, 0)):
         points = []
         for i in range(ship_size):
@@ -87,12 +106,14 @@ class Board(Component):
                 return None
         return points
 
+
     def render(self, screen) -> None:
         super().render(screen)
 
         for row in self.buttons:
             for button in row:
                 button.render(screen)
+
 
     def process_input(self, events, pressed_keys) -> None:
         if (self.enable):

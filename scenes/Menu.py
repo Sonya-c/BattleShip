@@ -36,8 +36,15 @@ class Menu(Scene):
         ]
 
         self.buttons = [
-            Button(string="PLAY", x=400, y=350, font_size=20, action=lambda: self.change_scene(
-                2), bg_color=(237, 141, 31), border_color=(186, 105, 13), border=2, padding=30)
+            Button(string="PLAY", 
+                x=400,
+                y=350,
+                font_size=20,
+                action=lambda: self.change_scene(1),
+                bg_color=(237, 141, 31),
+                border_color=(186, 105, 13),
+                border=2,
+                padding=30)
         ]
 
         self.spinner = Spinner(470, 240, start= int(state["ship_num"]),min=1, max=20)
@@ -57,6 +64,9 @@ class Menu(Scene):
         super().process_input(events, pressed_keys)
 
         self.spinner.process_input(events, pressed_keys)
-        self.state["ship_num"] = self.spinner.value
+
+        if (self.spinner.value != self.state["ship_num"]):
+            self.state["ship_num"] = self.spinner.value
+            self.state["update"] = True 
 
         

@@ -20,9 +20,10 @@ class Spinner(Component):
                  step=1,
                  color: Tuple[int, int, int] = (1, 18, 38),
                  bg_color: Tuple[int, int, int] = (228, 234, 242),
-                 border_color: Tuple[int, int, int] = (188, 194, 202)
+                 border_color: Tuple[int, int, int] = (188, 194, 202),
+                 enable: bool = True
                  ) -> None:
-        super().__init__()
+        super().__init__(enable)
 
         self.x = x
         self.y = y

@@ -40,6 +40,10 @@ class Scene(Component):
         self.state["scene_id"] = scene_id
 
 
+    def update(self):
+        # overwrite this
+        pass
+
     def process_input(self, events: List[Event], pressed_keys: Sequence[bool]) -> None:
         for button in self.buttons:
             button.process_input(events, pressed_keys)

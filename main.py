@@ -24,12 +24,13 @@ def main() -> None:
 
     state: Dict[str, any] = {
         "ship_num": 5, 
-        "scene_id": 0
+        "scene_id": 0,
+        "update": False
     }
 
     scenes: Dict[int, Scene] = {
         0: Menu(0, state),
-        2: Game(1, state)
+        1: Game(1, state)
     }
 
     while run:
@@ -43,8 +44,14 @@ def main() -> None:
             else:
                 events.append(event)
 
-        scenes[state["scene_id"]].process_input(events, pressed_keys)
+        if (state["update"]):
+            for scene in scenes:
+                scenes[scene].update()
+
+            state["update"] = False
+
         scenes[state["scene_id"]].render(screen)
+        scenes[state["scene_id"]].process_input(events, pressed_keys)
         
         pygame.display.update()  # Display the changes
 
