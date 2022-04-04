@@ -36,17 +36,21 @@ class Board(Component):
         self.hide = hide
         self.change_turn = change_turn
 
+        self.init()
+
+
+    def init(self):
         self.board_table = []
         self.buttons: List[List[Button]] = []
 
         box_y = self.y
-        for row in range(0, rows):
+        for row in range(0, self.rows):
             box_x = self.x
 
             self.buttons.append([])
-            self.board_table.append([0]*cols)
+            self.board_table.append([0]*self.cols)
 
-            for col in range(0, cols):
+            for col in range(0, self.cols):
 
                 self.buttons[row].append(
                     Button(" ",
@@ -64,51 +68,75 @@ class Board(Component):
                 # print(box_x, box_y)
 
             box_y += self.buttons[row][col].rect.height + 5
+        
         self.generate()
-
 
     def change(self, x: int, y: int):
         self.change_turn()
 
         # To Do logic here
-        if (self.board_table[x][y] == 1):
-            self.board_table[x][y] = -1
+        if (self.board_table[x][y] > 0):
             self.buttons[x][y].bg_color = (219, 0, 37)
-        else:
+            self.buttons[x][y].string = str(self.board_table[x][y])
+            self.buttons[x][y].update()
+            self.board_table[x][y] = -1
+
+        elif self.board_table[x][y] == 0:
             self.buttons[x][y].bg_color = (115, 115, 115)
 
         self.buttons[x][y].update()
 
 
     def generate(self):
-        print(f"board.generate len of ships: {len(self.ships)}, rows={self.rows}, cols={self.cols}")
+        
         for ship in self.ships:
+            m = 0
 
-            while True:
-                pos = (random.randint(0, self.rows), random.randint(0, self.cols))
-                direction = (random.randint(0, 1), random.randint(0, 1))
-
-                points = self.ship_points(pos, ship.get_size(), direction)
-
+            while m <= 100:
+                m += 1
+                
+                points = self.ship_points(ship.get_size())
+                
                 if (points != None):
-                    for point in points:
-                        self.board_table[point[0]][point[1]] = 1
-                        if (not self.hide):
-                            self.buttons[point[0]][point[1]
-                                                   ].bg_color = (80, 174, 217)
+                    self.add_ship(ship, points)
                     break
+            
+            if (m >= 100):
+                self.init()
+                break
 
-        print(self.board_table)
 
-
-    def ship_points(self, pos=(3, 3), ship_size=4, direction=(1, 0)):
+    def ship_points(self, ship_size=3):
+        pos = (random.randint(0, self.rows), random.randint(0, self.cols))
+        direction = (random.randint(0, 1), random.randint(0, 1))
         points = []
+
+        if (direction[0] == direction[1]):
+            temp_list = [direction[0], direction[1]]  # 'tuple' object does not support item assignment
+
+            t: int = random.randint(0, 1)  # position of the direction to change
+            # abs(t - 1) if t = 0, gives 0; if t = 1, gives 1
+            temp_list[t] = abs(direction[abs(t - 1)] - 1)
+
+            direction = (temp_list[0], temp_list[1])
+
         for i in range(ship_size):
             points.append((pos[0]+i*direction[0], pos[1]+i*direction[1]))
-            if points[i][0] >= self.rows or points[i][1] >= self.cols:
-                return None
-        return points
 
+            if points[i][0] >= self.rows or points[i][1] >= self.cols or self.board_table[points[i][0]][points[i][1]] > 0:
+                return None
+
+        return points
+    
+
+    def add_ship(self, ship, points):
+        for point in points:
+            self.board_table[point[0]][point[1]] = ship.get_size()
+
+            if (not self.hide):
+                self.buttons[point[0]][point[1]].string = str(ship.get_size())
+                self.buttons[point[0]][point[1]].bg_color = (80, 174, 217)
+                self.buttons[point[0]][point[1]].update()
 
     def render(self, screen) -> None:
         super().render(screen)

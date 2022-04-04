@@ -51,8 +51,8 @@ class Game(Scene):
         self.ships: List[Ship] = []
 
         # Genrate the ships
-        for _ in range(0, self.state["ship_num"]):
-            self.ships.append(Ship("", random.randint(0, 3)))
+        for _ in range(self.state["ship_num"]):
+            self.ships.append(Ship("", random.randint(1, 3)))
 
         # Create the boards
         self.board_machine = Board(110, 150, 30, 30, self.state["row_num"], self.state["col_num"], 
@@ -82,7 +82,7 @@ class Game(Scene):
     def check(self, board: Board):
         for row in board.board_table:
             for col in row:
-                if col == 1:
+                if col > 0:
                     return False
 
         return True
@@ -114,4 +114,5 @@ class Game(Scene):
             self.game_state["play"] = False
 
         elif (self.check(self.board_machine)):
+            self.modal.set_msg("Perdiste :'c")
             self.game_state["play"] = False

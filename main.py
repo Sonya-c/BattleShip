@@ -25,9 +25,9 @@ def main() -> None:
     state: Dict[str, any] = {
         "ship_num": 5, 
         "scene_id": 0,
-        "update": False,
         "row_num": 5,
         "col_num": 5,
+        "update": False
     }
 
     scenes: Dict[int, Scene] = {
@@ -46,10 +46,8 @@ def main() -> None:
             else:
                 events.append(event)
 
-        if (state["update"]):
-            for scene in scenes:
-                scenes[scene].update()
-
+        if (state["scene_id"] == 1 and state["update"]):
+            scenes[state["scene_id"]].update()
             state["update"] = False
 
         scenes[state["scene_id"]].render(screen)
