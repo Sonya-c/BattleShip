@@ -25,20 +25,23 @@ class Board(Component):
             ) -> None:
         super().__init__(enable)
 
-        self.x = x
-        self.y = y
+        self.x = x + ((box_w + 20)*(10 - cols))//4        
+        self.y = y + ((box_h + 20)*(10 - rows))//4
+
         self.box_w = box_w
         self.box_h = box_h
+        self.rows = rows
+        self.cols = cols
         self.ships = ships
         self.hide = hide
         self.change_turn = change_turn
-    
+
         self.board_table = []
         self.buttons: List[List[Button]] = []
 
-        box_y = y
+        box_y = self.y
         for row in range(0, rows):
-            box_x = x
+            box_x = self.x
 
             self.buttons.append([])
             self.board_table.append([0]*cols)
@@ -78,11 +81,11 @@ class Board(Component):
 
 
     def generate(self):
-        print("board.generate len of ships", len(self.ships))
+        print(f"board.generate len of ships: {len(self.ships)}, rows={self.rows}, cols={self.cols}")
         for ship in self.ships:
 
             while True:
-                pos = (random.randint(0, 10), random.randint(0, 10))
+                pos = (random.randint(0, self.rows), random.randint(0, self.cols))
                 direction = (random.randint(0, 1), random.randint(0, 1))
 
                 points = self.ship_points(pos, ship.get_size(), direction)
@@ -102,7 +105,7 @@ class Board(Component):
         points = []
         for i in range(ship_size):
             points.append((pos[0]+i*direction[0], pos[1]+i*direction[1]))
-            if points[i][0] >= 10 or points[i][1] >= 10:
+            if points[i][0] >= self.rows or points[i][1] >= self.cols:
                 return None
         return points
 

@@ -25,7 +25,9 @@ def main() -> None:
     state: Dict[str, any] = {
         "ship_num": 5, 
         "scene_id": 0,
-        "update": False
+        "update": False,
+        "row_num": 5,
+        "col_num": 5,
     }
 
     scenes: Dict[int, Scene] = {

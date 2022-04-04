@@ -55,12 +55,12 @@ class Game(Scene):
             self.ships.append(Ship("", random.randint(0, 3)))
 
         # Create the boards
-        self.board_machine = Board(110, 150, 30, 30, 10, 10, 
+        self.board_machine = Board(110, 150, 30, 30, self.state["row_num"], self.state["col_num"], 
                                 self.ships, 
                                 enable=False, 
                                 change_turn=lambda: self.change_turn(1))
 
-        self.board_player = Board(440, 150, 30, 30, 10, 10, 
+        self.board_player = Board(440, 150, 30, 30, self.state["row_num"], self.state["col_num"], 
                                 self.ships,
                                 hide=True,
                                 change_turn=lambda: self.change_turn(0))
@@ -73,7 +73,10 @@ class Game(Scene):
 
             # machine turn 
             if (turn == 0):
-                self.board_machine.change(random.randint(0, 9), random.randint(0, 9))
+                self.board_machine.change(
+                    random.randint(0, self.state["row_num"] - 1), 
+                    random.randint(0,  self.state["col_num"] -1)
+                    )
         
 
     def check(self, board: Board):
